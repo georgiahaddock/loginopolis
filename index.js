@@ -25,7 +25,7 @@ app.post('/register', async (req, res, next) => {
     const hash     = await bcrypt.hash(password, saltCount);
     const user = await User.create({username, password: hash});
     const message = `successfully created user ${username}`;
-    res.send(message);
+    res.status(200).send(message);
   }
   catch(error){
     console.error(error);
