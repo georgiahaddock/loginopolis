@@ -9,7 +9,7 @@ describe('Endpoints', () => {
     const testUserData = { username: 'bobbysmiles', password: 'youllneverguess' };
     let registerResponse;
     let loginResponse;
-    
+
     beforeAll(async () => {
         await sequelize.sync({ force: true }); // recreate db
         await seed();
@@ -47,6 +47,9 @@ describe('Endpoints', () => {
             expect(foundUser.password).not.toBe(testUserData.password);
             expect(foundUser.password).toEqual(expect.stringMatching(/^\$2[ayb]\$.{56}$/));
         });
+        it('should reject existing usernames', async () => {
+            expect(registerResponse.text).toBe('User already exists. Try another username.');
+        })
     });
 
     describe('POST /login', () => {
