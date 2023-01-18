@@ -23,7 +23,7 @@ app.post('/register', async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const hash     = await bcrypt.hash(password, saltCount);
-    const [user] = await User.create({username, password: hash});
+    const user = await User.create({username, password: hash});
     const message = `successfully created user ${username}`;
     res.send(message);
   }
@@ -45,10 +45,10 @@ app.post('/login', async (req, res, next)=>{
     }
     verified = await bcrypt.compare(password, user.password);
     if(!verified){
-      res.send('password incorrect');
+      res.send('incorrect username or password');
       return;
     }
-    res.status(401).send(`successfully logged in user ${username}`);
+    res.status(200).send(`successfully logged in user ${username}`);
 
   }catch(error){
     console.error(error);
